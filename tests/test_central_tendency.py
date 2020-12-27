@@ -4,8 +4,14 @@ from central_tendency.mean import mean
 
 
 class MyTestCase(unittest.TestCase):
-    def test_mean(self):
+    def test_mean_list(self):
         observations = [0, 340, 70, 140, 200, 180, 210, 150, 100, 130, 140, 180, 190, 160, 290, 50, 220, 180, 200, 210]
+        calculated_mean = mean(observations)
+        self.assertEqual(calculated_mean, 167)
+
+    def test_mean_array(self):
+        observations = np.array([0, 340, 70, 140, 200, 180, 210, 150, 100, 130,
+                                 140, 180, 190, 160, 290, 50, 220, 180, 200, 210])
         calculated_mean = mean(observations)
         self.assertEqual(calculated_mean, 167)
 
