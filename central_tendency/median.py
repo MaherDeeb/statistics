@@ -35,15 +35,25 @@ class Median:
             self.median = (self.x[int(self.x.size / 2)] + self.x[int(self.x.size / 2 + 1)]) / 2
 
     def pytorch_cpu_median(self):
-        x_tensor = torch.tensor(self.x, device=Device.CPU.value)
-        self.median = torch.divide(torch.sum(x_tensor), x_tensor.size()[0])
+        self.x = torch.sort(torch.tensor(self.x, device=Device.CPU.value)).values
+        if self.is_odd():
+            self.median = self.x[int((self.x.size()[0] - 1) / 2)]
+        else:
+            self.median = (self.x[int(self.x.size()[0] / 2)] + self.x[int(self.x.size()[0] / 2 + 1)]) / 2
 
     def pytorch_gpu_median(self):
-        x_tensor = torch.tensor(self.x, device=Device.GPU.value)
-        self.median = torch.divide(torch.sum(x_tensor), x_tensor.size()[0])
+        self.x = torch.sort(torch.tensor(self.x, device=Device.GPU.value)).values
+        if self.is_odd():
+            self.median = self.x[int((self.x.size()[0] - 1) / 2)]
+        else:
+            self.median = (self.x[int(self.x.size()[0] / 2)] + self.x[int(self.x.size()[0] / 2 + 1)]) / 2
 
     def is_odd(self):
-        return False if not self.x.size % 2 else True
+        try:
+            return False if not self.x.size % 2 else True
+        except Exception as e:
+            print(f"Error: {e}")
+            return False if not self.x.size()[0] % 2 else True
 
     @property
     def get_median(self):
